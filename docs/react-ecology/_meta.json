@@ -1,0 +1,51 @@
+[
+  {
+    "type": "file",
+    "name": "index",
+    "label": "概览"
+  },
+  {
+    "type": "divider",
+    "dashed": true
+  },
+  {
+    "type": "section-header",
+    "label": "生态体系"
+  },
+  {
+    "type": "dir",
+    "name": "react",
+    "label": "React",
+    "collapsible": true,
+    "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "react-router",
+    "label": "React Router",
+    "collapsible": true,
+    "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "redux",
+    "label": "Redux",
+    "collapsible": true,
+    "collapsed": false
+  },
+  {
+    "type": "divider",
+    "dashed": true
+  },
+  {
+    "type": "section-header",
+    "label": "源码解析"
+  },
+  {
+    "type": "dir",
+    "name": "source-react",
+    "label": "React",
+    "collapsible": true,
+    "collapsed": false
+  }
+]

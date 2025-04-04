@@ -1,0 +1,151 @@
+[
+  {
+    "text": "前端新手村",
+    "activeMatch": "^/(react-ecology|vue-family)/",
+    "items": [
+      {
+        "text": "实用软件",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "语言基础",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "数据结构与算法",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "React 生态",
+        "link": "/react-ecology/index",
+        "activeMatch": "^/react-ecology/"
+      },
+      {
+        "text": "Vue 全家桶",
+        "link": "/vue-family/index",
+        "activeMatch": "^/vue-family/"
+      },
+      {
+        "text": "小程序",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "网络协议",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "构建工具",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "代码管理",
+        "activeMatch": "^/null/"
+      }
+    ]
+  },
+  {
+    "text": "前端冒险者营地",
+    "activeMatch": "^/null/",
+    "items": [
+      {
+        "text": "脚手架",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "测试",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "监控",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "CI/CD",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "微前端",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "低代码",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "性能优化",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "安全",
+        "activeMatch": "^/null/"
+      }
+    ]
+  },
+  {
+    "text": "前端深渊回廊",
+    "activeMatch": "^/null/",
+    "items": [
+      {
+        "text": "设计模式",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "图形可视化",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "桌面应用",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "移动APP",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "前沿探索",
+        "activeMatch": "^/null/"
+      }
+    ]
+  },
+  {
+    "text": "全栈进阶",
+    "activeMatch": "^/null/",
+    "items": [
+      {
+        "text": "Node",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "NestJS",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "数据库",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "Reids",
+        "activeMatch": "^/null/"
+      }
+    ]
+  },
+  {
+    "text": "AI 人工智能",
+    "activeMatch": "^/null/",
+    "items": [
+      {
+        "text": "AI 提效",
+        "activeMatch": "^/null/"
+      },
+      {
+        "text": "AI Agent",
+        "activeMatch": "^/null/"
+      }
+    ]
+  },
+  {
+    "text": "关于我",
+    "link": "/aboutme/introduction",
+    "activeMatch": "^/aboutme/"
+  }
+]
