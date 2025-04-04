@@ -39,4 +39,4 @@ npm run preview
 
 ## Website
 
-...
+- [Jelly Monster's Magic Book | GitHub Pages](https://lemonnuu.github.io/blog/)

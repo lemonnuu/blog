@@ -3,7 +3,8 @@ import { defineConfig } from 'rspress/config';
 
 export default defineConfig({
   root: path.join(__dirname, 'docs'),
-  title: 'Jelly Monster',
+  base: '/blog/',
+  title: '果冻怪',
   description: '果冻怪的魔法书，基于 Rspress 构建。',
   icon: '/logo/jelly-monster.png',
   logo: {
