@@ -1,5 +1,6 @@
 import * as path from 'node:path';
 import { defineConfig } from 'rspress/config';
+import readingTime from 'rspress-plugin-reading-time';
 
 export default defineConfig({
   root: path.join(__dirname, 'docs'),
@@ -12,6 +13,9 @@ export default defineConfig({
     dark: '/logo/jelly-monster.png',
   },
   logoText: '果冻怪',
+  mediumZoom: {
+    selector: '.rspress-doc img',
+  },
   themeConfig: {
     footer: {},
     outlineTitle: '页面导航',
@@ -45,5 +49,7 @@ export default defineConfig({
       },
     ],
   },
+  globalStyles: path.join(__dirname, 'styles/index.css'),
   builderPlugins: [],
+  plugins: [readingTime({ defaultLocale: 'zh-CN' })],
 });
