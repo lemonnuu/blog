@@ -1,0 +1,24 @@
+/**
+  * https://github.com/web-infra-dev/rspress/tree/main/packages/plugin-container-syntax
+  * 主要是增加 rspress-directive-pure class 自定义无标题容器样式
+*/
+
+.rspress-doc div.rspress-directive {
+  margin: 16px 0;
+  padding: 8px 24px 0;
+}
+
+.rspress-doc .rspress-directive.rspress-directive-pure {
+  margin: 16px 0;
+  padding: 0 24px;
+}
+
+.rspress-doc .rspress-directive div.rspress-directive-title {
+  margin-bottom: 4px;
+}
+
+.rspress-doc
+  .rspress-directive.rspress-directive-pure
+  .rspress-directive-title {
+  display: none;
+}
