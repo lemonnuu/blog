@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@rspress/plugin-preview": "^1.43.10",
     "@rspress/plugin-shiki": "^1.43.10",
     "@types/node": "^18.11.17",
     "eslint": "^9.19.0",

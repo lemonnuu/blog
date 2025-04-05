@@ -3,6 +3,7 @@ import { defineConfig } from 'rspress/config';
 import readingTime from 'rspress-plugin-reading-time';
 import pluginContainerSyntax from './plugins/plugin-container-syntax';
 import { pluginShiki, createTransformerDiff } from '@rspress/plugin-shiki';
+import { pluginPreview } from '@rspress/plugin-preview';
 
 export default defineConfig({
   root: path.join(__dirname, 'docs'),
@@ -65,6 +66,9 @@ export default defineConfig({
       ],
     }),
     readingTime({ defaultLocale: 'zh-CN' }),
+    pluginPreview({
+      defaultRenderMode: 'pure',
+    }),
   ],
   markdown: {
     remarkPlugins: [
