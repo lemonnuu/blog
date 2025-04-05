@@ -2,7 +2,7 @@ import * as path from 'node:path';
 import { defineConfig } from 'rspress/config';
 import readingTime from 'rspress-plugin-reading-time';
 import pluginContainerSyntax from './plugins/plugin-container-syntax';
-import { pluginShiki } from '@rspress/plugin-shiki';
+import { pluginShiki, createTransformerDiff } from '@rspress/plugin-shiki';
 
 export default defineConfig({
   root: path.join(__dirname, 'docs'),
@@ -53,7 +53,19 @@ export default defineConfig({
   },
   globalStyles: path.join(__dirname, 'styles/index.css'),
   builderPlugins: [],
-  plugins: [pluginShiki(), readingTime({ defaultLocale: 'zh-CN' })],
+  plugins: [
+    pluginShiki({
+      transformers: [
+        // 按需加入即可
+        createTransformerDiff(),
+        // createTransformerLineNumber(),
+        // createTransformerErrorLevel(),
+        // createTransformerHighlight(),
+        // createTransformerFocus(),
+      ],
+    }),
+    readingTime({ defaultLocale: 'zh-CN' }),
+  ],
   markdown: {
     remarkPlugins: [
       pluginContainerSyntax, // 替换 @rspress/plugin-container-syntax 插件

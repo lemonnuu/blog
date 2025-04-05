@@ -2,3 +2,10 @@
 img.medium-zoom-image:not(.medium-zoom-image--opened) {
   border-radius: 8px;
 }
+
+/* 修复 code 高亮样式问题 */
+.line.diff,
+.line.code-line-highlighted {
+  width: 100%;
+  margin: 0;
+}

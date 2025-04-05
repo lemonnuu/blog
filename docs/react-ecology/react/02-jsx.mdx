@@ -1,3 +1,176 @@
+import { Tab, Tabs } from '@theme';
+
 # JSX 语法
 
-拼命码字中...
+JSX（JavaScript
+XML）是 JavaScript 的语法扩展，它可以让你在 JavaScript 文件中书写类似 HTML 标签，由 React 团队推广使用，是编写 React 组件的最佳方式。
+
+## 简介
+
+JSX 本质上是一种语法糖，无法被浏览器直接执行，因为它并不是标准的 JavaScript 语法，必须借助
+[Babel](https://babel.xiniushu.com/docs/en/babel-preset-react#%E4%B8%A4%E7%A7%8D%E4%B8%8D%E5%90%8C%E7%9A%84%E8%BF%90%E8%A1%8C%E6%97%B6)
+或 [SWC](https://rspack.dev/zh/guide/features/builtin-swc-loader) 等编译工具将其编译成浏览器可识别的
+`React.createElement()` 函数。例如：
+
+<Tabs>
+  <Tab label="编译前">
+
+```jsx
+const element = <h1>Hello, World!</h1>;
+```
+
+  </Tab>
+  <Tab label="编译后">
+
+```js
+const element = React.createElement('h1', null, 'Hello, World!');
+```
+
+  </Tab>
+</Tabs>
+
+现代构建工具如
+[Vite](https://cn.vite.dev/)、[Webpack](https://webpack.docschina.org/concepts/)、[Rspack](https://rspack.dev/zh/)
+都已集成 JSX 编译，只需适配一下即可。
+
+## 将标签引入 JavaScript
+
+我们知道，网页是构建在 HTML、CSS 和 JavaScript 基础之上的。在以前，Web 开发者都是将网页内容存放在 HTML 中，样式放在 CSS 中，而逻辑则放在 JavaScript 中 —— 通常是在不同的文件中！
+
+![以前开发网页行为](/react-ecology/react/004-react-jsx-before.png)
+
+但随着前端复杂度的提升，这种关注点分离的物理分割方式逐渐暴露出维护成本高、组件复用困难等一系列问题。而组件化开发提出了一种更为高效的方案：**将 JS、HTML、CSS 写在一起**，也就是关注点混合。
+
+![以前开发网页行为](/react-ecology/react/005-react-jsx.png)
+
+JSX 就是将标签和渲染逻辑混合的语法，而 CSS 混合则是依赖 CSS in JS。
+
+## 规则
+
+:::note
+
+- 只能返回一个根元素
+- 标签必须闭合
+- 使用驼峰命名法给 ~~所有~~ 大部分属性命名
+- 在大括号中使用 JavaScript
+
+:::
+
+### 只能返回一个根元素
+
+JSX 只能返回一个根元素，如果想在一个组件中包含多个元素，需要用一个父标签把它们包裹起来。最常见的做法是使用空标签
+`<></>`。
+
+```jsx {1,4}
+<>
+  <h1>hello, world!</h1>
+  <ul>...</ul>
+</>
+```
+
+这个空标签被称作
+[`React.Fragment`](https://zh-hans.react.dev/reference/react/Fragment)。它允许你将子元素分组，且不会在 HTML 结构中添加额外节点。
+
+:::info 为什么只能返回一个根元素？
+
+JSX 虽然看起来很像 HTML，但在底层其实被转化为了 JavaScript 对象，你不能在一个函数中返回多个对象，除非用一个数组把他们包装起来。这就是为什么多个 JSX 标签必须要用一个父元素或者 Fragment 来包裹的原因。
+
+:::
+
+### 标签必须闭合
+
+JSX 要求标签必须正确闭合。像 `<img>` 这样的自闭合标签必须书写成 `<img />`，而像 `<li>oranges`
+这样只有开始标签的元素必须带有闭合标签，需要规范为 `<li>oranges</li>`。
+
+```jsx {2,4-6}
+<>
+  <img src="https://i.imgur.com/yXOvdOSs.jpg" className="photo" />
+  <ul>
+    <li>只能返回一个根元素</li>
+    <li>标签必须闭合</li>
+    <li>使用驼峰命名法给大部分属性命名</li>
+  </ul>
+</>
+```
+
+### 使用驼峰命名法给~~所有~~大部分属性命名
+
+JSX 最终会被转化为 JavaScript，而 JSX 中的属性也会变成 JavaScript 对象中的键值对。在组件中，经常会遇到需要用变量的方式读取这些属性的时候。但 JavaScript 对变量的命名有限制。例如，变量名称不能包含
+`-` 符号或者像 `class` 这样的保留字。
+
+这就是为什么在 React 中，大部分 HTML 和 SVG 属性都用驼峰式命名法表示。例如，需要用 `strokeWidth` 代替
+`stroke-width`。由于 `class` 是一个保留字，所以在 React 中需要用 `className` 来代替它表示类名,这也是
+[DOM 属性中的命名](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/className)。`<label>` 标签的 `for`
+属性也需要改写成 `htmlFor`。
+
+```jsx {2-3}
+<form>
+  <label htmlFor="username">用户名：</label>
+  <input type="text" id="username" name="username" data-set="username" className="username" />
+</form>
+```
+
+:::danger
+
+- `class` -> `className`
+- `for` -> `htmlFor`
+
+:::
+
+:::info
+
+由于历史原因，`aria-*` 和 `data-*` 属性是以带 `-` 符号的 HTML 格式书写的。
+
+:::
+
+### 在大括号中使用 JavaScript
+
+JSX 可以通过大括号嵌入 JavaScript，大括号内任何 JavaScript 都能运行。
+
+```jsx {9}
+const today = new Date();
+const className = 'h1 title';
+
+function formatDate(date) {
+  return new Intl.DateTimeFormat('zh-CN', { weekday: 'long' }).format(date);
+}
+
+export default function TodoList() {
+  return <h1 className={className}>To Do List for {formatDate(today)}</h1>;
+}
+```
+
+:::info
+
+在 JSX 中，只能在以下两种场景中使用大括号：
+
+- 用作 JSX 标签内的文本：`<h1>{name}</h1>`
+- 用作紧跟在 `=` 符号后的属性：`src={avatar}`
+
+:::
+
+#### 双大括号
+
+JSX 中的双大括号 `{{}}` 只不过是包在大括号里的一个对象罢了，一般用于传递对象形式的 props 或编写内联样式：
+
+```jsx {2}
+export default function Profile() {
+  return <Avatar style={{ backgroundColor: 'black' }} info={{ img: '', name: '' }} />;
+}
+```
+
+### 注释
+
+JSX 注释需要先用括号 `{}` 将代码变成 JavaScript 环境，再使用 JavaScript 注释 `{ /* ... */ }` 即可。
+
+```jsx {5}
+export default function TodoList() {
+  return (
+    <ul>
+      <li>apple</li>
+      {/* <li>orange</li> */}
+      <li>banana</li>
+    </ul>
+  );
+}
+```
