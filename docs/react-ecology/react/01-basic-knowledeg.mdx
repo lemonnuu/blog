@@ -1,0 +1,186 @@
+import { Badge, Tab, Tabs, PackageManagerTabs } from '@theme';
+
+# 快速入门
+
+> 获取 React 官方资讯请访问 [React Blog](https://zh-hans.react.dev/blog)，也可以在 Bluesky 上关注
+> [@react.dev](https://bsky.app/profile/react.dev) 或 Twitter 上关注 [@reactjs](https://x.com/reactjs)。
+
+## 简介
+
+React 是一款由 [Meta](https://about.meta.com/) 公司开源的，用于构建用户界面的渐进式 JavaScript 框架。它有两个核心库：
+
+:::info
+
+- react：核心库，与平台无关，不直接操作浏览器 DOM 或原生环境，只负责组件的定义和更新逻辑
+  - 组件模型（类组件、函数组件、Hooks）
+  - 虚拟 DOM 的协调（Reconciliation）算法
+  - 状态管理（如 `useState`、`useReducer`）
+  - 类组件的生命周期（`componentDidMount`）或函数组件的副作用(`useEffect`)
+- react-dom：渲染器，提供 Web 专用的 DOM 操作能力，将 React 组件渲染到浏览器中
+  - 将虚拟 DOM 转换为真实 DOM（如 `div`、`button`）
+  - 处理浏览器事件（如 `onClick`）
+  - 服务端渲染（SSR）和客户端渲染
+
+:::
+
+为什么需要这样分开？主要有两个维度的考量：
+
+:::note
+
+- 职责分离：核心库专注逻辑，渲染器处理平台细节
+- 跨平台能力：核心库可搭配不同渲染器，实现目标平台的 UI
+
+:::
+
+其它渲染器：
+
+:::note
+
+- React Native：渲染到 iOS/Android 原生组件
+- React Three Fiber：渲染到 WebGL/Three.js
+- React PDF：渲染到 PDF 文件
+
+:::
+
+## 安装
+
+想要快速体验 React，可以直接使用
+[CodeSandbox](https://codesandbox.io/p/sandbox/new)、[StackBlitz](https://stackblitz.com/edit/react-byhrp2r3?file=src%2FApp.js)
+或 [CodePen](https://codepen.io/pen?template=QWYVwWN) 线上尝试。
+
+### 通过 CDN 使用 React
+
+可以借助 script 标签直接通过 CDN 来使用 React：
+
+```html
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+```
+
+这种方式只适合学习，不适合生产环境，它在浏览器中使用 Babel 缓慢编译 JSX。
+
+### 创建 React 应用 <Badge text="推荐" type="tip"></Badge>
+
+诸如 [Vite](https://cn.vite.dev/)、[Parcel](https://parceljs.org/)、[Rsbuild](https://rsbuild.dev/zh/)
+等构建工具提供了打包和运行源代码的功能，同时也提供了本地开发的开发服务器，以及部署应用到生产服务器的构建命令，非常地方便。我们将使用构建工具来创建 React 项目。
+
+推荐使用 Vite 创建 React 项目：
+
+<PackageManagerTabs command="create vite@latest" />
+
+如果你更喜欢 Webpack 周边生态，也可以使用 Rsbuild 创建项目：
+
+<PackageManagerTabs command="create rsbuild@latest" />
+
+## 环境配置
+
+工欲善其事必先利其器，React 可与编辑器、TypeScript、浏览器扩展和编译器等多种工具集成，提升开发体验。
+
+### 编辑器配置
+
+编辑器推荐使用 [VS Code](https://code.visualstudio.com/)，除了
+[ESLint](https://github.com/Microsoft/vscode-eslint)、[Prettier](https://github.com/prettier/prettier-vscode)
+等常见扩展外，还需要安装
+[ES7 + React/Redux/React-Native snippets](https://github.com/r5n-labs/vscode-react-javascript-snippets)
+扩展以提供良好的 React 语法支持。
+
+![ES7 + React/Redux/React-Native snippets VSCode 扩展](/react-ecology/react/001-react-snippets.png)
+
+### 浏览器扩展
+
+浏览器扩展
+[React Developer Tools](https://chromewebstore.google.com/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=zh-CN&utm_source=ext_sidebar)
+可以非常方便地调试由 React 构建的网站，推荐安装。
+
+![React Developer Tools](/react-ecology/react/002-react-developer-tools.png)
+
+## 组件基础
+
+React 应用程序由组件组成。一个组件是 UI 界面地一部分，它拥有自己的逻辑和外观。组件可以小到一个按钮，也可以大到整个页面。我们可以将 UI 划分为独立的、可重用的部分，并且对每个部分进行单独的思考。在实际应用中，组件常常被组织成一个层层嵌套的树状结构：
+
+![组件树表示视图层次结构](/react-ecology/react/003-react-preserving-state-dom-tree.webp)
+
+### 组件定义
+
+React 组件分为 **类组件** 和
+**函数组件**，虽然推荐使用函数组件，但在老项目中不可避免地会遗留类组件的代码，所以两种组件使用方式都需要了解，具体使用请参考
+[类组件](./03-calss-component.mdx) 和 [函数组件](./04-func-component.mdx)。下面只介绍一些基本概念。
+
+:::info
+
+React 组件必须以大写字母开头，HTML 标签则必须是小写字母
+
+:::
+
+### 创建组件
+
+`React.createElement` 方法可以用来创建组件，但是 [JSX](./02-jsx.mdx) 是编写组件的最佳方式。
+
+<Tabs>
+  <Tab label="用法">
+
+```js
+const element = createElement(type, props, ...children);
+```
+
+  </Tab>
+  <Tab label="示例">
+
+```js
+import { createElement } from 'react';
+
+function Greeting({ name }) {
+  return createElement('h1', { className: 'greeting' }, '你好');
+}
+```
+
+  </Tab>
+</Tabs>
+
+### 挂载根组件
+
+前面说到，大多数真实的应用都是由一棵嵌套的、可重用的组件树组成。[`ReactDOM.createRoot`](https://zh-hans.react.dev/reference/react-dom/client/createRoot)
+方法允许在浏览器 DOM 节点中创建根节点并控制其中的 DOM。
+
+```js
+import ReactDOM from 'react-dom/client';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+```
+
+在创建根节点之后，需要调用 `root.render` 来显示 React 组件：
+
+```js
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+);
+```
+
+在首次调用 `root.render` 时，React 会先清空根节点中所有已存在的 HTML，然后挂载并绘制 React 组件。
+
+:::info
+
+使用 `<React.strictMode></React.strictMode>` 包裹组件表示开启严格模式，它只在开发环境中生效：
+
+- 组件将[额外重新渲染一次](https://zh-hans.react.dev/reference/react/StrictMode#fixing-bugs-found-by-double-rendering-in-development)以查找由于非纯渲染而引起的错误
+- 组件将[额外重新运行一次 Effect](https://zh-hans.react.dev/reference/react/StrictMode#fixing-bugs-found-by-re-running-effects-in-development)
+  以查找由于缺少 Effect 清理而引起的错误
+- 组件将[额外重新运行一次 refs 回调](https://zh-hans.react.dev/reference/react/StrictMode#fixing-bugs-found-by-re-running-ref-callbacks-in-development)以查找由于缺少 ref 清理函数而引起的错误
+- 组件将被检查是否使用了已废弃的 API
+
+:::
+
+### 卸载根组件
+
+可以调用 `root.unmount` 来销毁 React 根节点内的渲染树，但通常不会有任何调用 `root.unmount` 的情况
+
+```js
+root.unmount();
+```

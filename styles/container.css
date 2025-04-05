@@ -5,7 +5,7 @@
 
 .rspress-doc div.rspress-directive {
   margin: 16px 0;
-  padding: 8px 24px 0;
+  padding: 12px 24px 0;
 }
 
 .rspress-doc .rspress-directive.rspress-directive-pure {
@@ -14,11 +14,9 @@
 }
 
 .rspress-doc .rspress-directive div.rspress-directive-title {
-  margin-bottom: 4px;
+  margin-bottom: 0px;
 }
 
-.rspress-doc
-  .rspress-directive.rspress-directive-pure
-  .rspress-directive-title {
+.rspress-doc .rspress-directive.rspress-directive-pure .rspress-directive-title {
   display: none;
 }

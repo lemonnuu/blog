@@ -1,0 +1,4 @@
+/* 文章内图片增加圆角 */
+img.medium-zoom-image:not(.medium-zoom-image--opened) {
+  border-radius: 8px;
+}
