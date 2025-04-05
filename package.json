@@ -10,12 +10,12 @@
     "preview": "rspress preview"
   },
   "dependencies": {
-    "@rspress/plugin-shiki": "^1.43.10",
     "rspress": "^1.40.2",
     "rspress-plugin-reading-time": "^0.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@rspress/plugin-shiki": "^1.43.10",
     "@types/node": "^18.11.17",
     "eslint": "^9.19.0",
     "globals": "^15.14.0",

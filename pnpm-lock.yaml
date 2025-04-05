@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@rspress/plugin-shiki':
-        specifier: ^1.43.10
-        version: 1.43.10
       rspress:
         specifier: ^1.40.2
         version: 1.43.10(webpack@5.98.0)
@@ -21,6 +18,9 @@ importers:
       '@eslint/js':
         specifier: ^9.19.0
         version: 9.23.0
+      '@rspress/plugin-shiki':
+        specifier: ^1.43.10
+        version: 1.43.10
       '@types/node':
         specifier: ^18.11.17
         version: 18.19.86
