@@ -1,6 +1,6 @@
 # Jelly Monster's Magic Book
 
-📝 Personal blog built with Rspress, hosted on GitHub Pages.
+📝 Jelly Monster's magic book built with Rspress, hosted on GitHub Pages.
 
 ## Setup
 
@@ -32,6 +32,7 @@ npm run preview
 
 ## Future plans
 
+- monorepo 管理方式
 - 定制个人主题（兼容 PC 和移动端）
 - 支持评论功能（最好可以推送至微信）
 - 支持公告栏目

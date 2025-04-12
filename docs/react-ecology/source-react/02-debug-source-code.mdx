@@ -1,0 +1,309 @@
+import { Badge, SourceCode } from '@theme';
+
+# 调试源码
+
+读源码少不了要调试，怎样才能更高效地调试呢？将 React 源码直接导入项目无疑是最好的一种方式。
+
+<SourceCode href="https://github.com/lemonnuu/debug-react" />
+
+## link 源码构建文件 <Badge text="不推荐" type="danger"></Badge>
+
+在 [React 官方文档](https://zh-hans.legacy.reactjs.org/docs/how-to-contribute.html#development-workflow)
+中其实已经提供了通过 `yarn link` 调试源码的方式。这种方式虽然简单，但并不是调试源码的最佳姿态。
+
+### 1. 创建项目
+
+先使用 [Rsbuild](https://rsbuild.dev/zh/) 创建一个 debug-react 项目，用于调试源码。
+
+```bash
+yarn create rsbuild
+```
+
+### 2. 下载源码
+
+将 [React 源码](https://github.com/facebook/react)
+克隆到本地，存放在哪里都行，最终结果不会受到影响，切换需要调试的版本分支并安装依赖。
+
+```bash
+git clone https://github.com/facebook/react.git
+```
+
+### 3. 源码构建文件
+
+下一步就可以对源码进行构建，构建时需要安装
+[JDK](https://www.oracle.com/java/technologies/downloads/)，否则可能构建失败。
+
+```bash
+# 构建
+yarn build react/index,react/jsx,react-dom/index,scheduler --type=NODE
+
+# link react 构建文件
+cd build/node_modules/react
+yarn link
+# link react-dom 构建文件
+cd build/node_modules/react-dom
+yarn link
+```
+
+### 4. link 文件
+
+接下来进入 debug-react 项目，使用 `yarn link` 指向本地 React 源码文件夹的构建文件。
+
+```bash
+# 进入 debug-react 项目中
+yarn link react react-dom
+```
+
+这样一来 debug-react 项目和本地 React 源码就关联起来了。
+
+### 5. 调试
+
+现在可以直接修改 React 源码构建出的 `react-dom.development.js` 文件，在其中添加调试代码进行调试了。
+
+:::danger 问题
+
+这种方式虽然可以调试 React 源码，但是我们直接调试的是构建后的诸如 `react-dom.development.js`
+文件，它并不是源码目录的文件。如果我们修改了源码，还得再次执行构建命令进行编译，打包生成新的诸如
+`react-dom.development.js` 文件，非常地麻烦。
+
+:::
+
+## 路径别名引入源码文件 <Badge text="推荐" type="tip"></Badge>
+
+要是我们能够直接调试 React 源码文件，就像调试项目中的组件一样就好了。[路径别名（alias）](https://rsbuild.dev/zh/guide/advanced/alias)允许开发者为模块定义别名，以便于在代码中更方便的引用它们。
+
+### 1. 创建项目
+
+先使用 [Rsbuild](https://rsbuild.dev/zh/) 创建一个 debug-react 项目，用于调试源码。
+
+```bash
+yarn create rsbuild
+```
+
+### 2. 下载源码
+
+将 [React 源码](https://github.com/facebook/react)
+克隆到本地，切换至需要调试的版本分支，存放在 debug-react 项目中，并安装依赖。
+
+```bash
+git clone https://github.com/facebook/react.git
+```
+
+这里我把它置于和 src 平级，并将源码文件重命名为 react-src：
+
+```text {2}
+debug-react
+├── react-src
+├── src
+└── ...
+```
+
+### 3. 源码文件适配
+
+React 源码无法直接在 debug-react 项目中运行，需要做一些适配。
+
+:::danger 注意
+
+这里选择的版本是 `18.3.1`，如果是其他版本，修改方式可能有差异，可根据报错提示自行修改。
+
+:::
+
+###### `react-src\.eslintrc.js`
+
+:::info
+
+1. extends 中的 `['fbjs', 'prettier']` 数组置为空
+
+```js
+extends: ['fbjs', 'prettier'] // [!code --]
+extends: [] // [!code ++]
+```
+
+2. plugins 中的 react 注释掉
+
+```js
+plugins: [
+  'jest',
+  'no-for-of-loops',
+  'no-function-declare-after-return',
+  // 'react', // [!code ++]
+  'react-internal',
+],
+```
+
+3. rules 中的 `no-unused-vars` 和 `react-internal/no-production-logging` 置为 `OFF`
+
+```js
+rules: {
+  'no-unused-vars': [ERROR, {args: 'none'}], // [!code --]
+  'react-internal/no-production-logging': ERROR, // [!code --]
+  'no-unused-vars': OFF, // [!code ++]
+  'react-internal/no-production-logging': OFF, // [!code ++]
+}
+```
+
+:::
+
+##### `react-src\packages\react\index.js`
+
+:::info
+
+在文件底部添加默认导出 React 代码：
+
+```js
+import * as React from './src/React'; // [!code ++]
+export default React; // [!code ++]
+```
+
+:::
+
+##### `react-src\packages\react-dom\client.js`
+
+:::info
+
+在文件底部添加默认导出 ReactDOM 代码：
+
+```js
+const ReactDOM = { createRoot, hydrateRoot }; // [!code ++]
+export default ReactDOM; // [!code ++]
+```
+
+:::
+
+##### `react-src\packages\scheduler\index.js`
+
+:::info
+
+导出相关方法：
+
+```js
+export { // [!code ++]
+  unstable_flushAllWithoutAsserting, // [!code ++]
+  unstable_flushNumberOfYields, // [!code ++]
+  unstable_flushExpired, // [!code ++]
+  unstable_clearYields, // [!code ++]
+  unstable_flushUntilNextPaint, // [!code ++]
+  unstable_flushAll, // [!code ++]
+  unstable_yieldValue, // [!code ++]
+  unstable_advanceTime, // [!code ++]
+  unstable_setDisableYieldValue, // [!code ++]
+} from './src/forks/SchedulerMock'; // [!code ++]
+```
+
+:::
+
+##### `react-src\packages\react-reconciler\src\ReactFiberHostConfig.js`
+
+:::info
+
+注释掉抛出错误的代码，并导出 DOM 环境的配置：
+
+```js
+// throw new Error('This module must be shimmed by a specific renderer.'); // [!code ++]
+
+export * from './forks/ReactFiberHostConfig.dom'; // [!code ++]
+```
+
+:::
+
+##### `react-src\packages\shared\ReactSharedInternals.js`
+
+:::info
+
+ReactSharedInternals 改为从 react 包中引入：
+
+```js
+// import * as React from 'react'; // [!code ++]
+
+// const ReactSharedInternals = // [!code ++]
+//   React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED; // [!code ++]
+
+import ReactSharedInternals from '../react/src/ReactSharedInternals'; // [!code ++]
+
+export default ReactSharedInternals;
+```
+
+:::
+
+### 4. 项目适配
+
+接下来还需要在项目中配置 alias 别名和定义全局变量，以及增加对 flow 的处理。
+
+##### alias 别名
+
+:::info
+
+在 `rsbuild.config.mjs` 文件中添加路径别名：
+
+```js
+export default defineConfig({
+  resolve: { // [!code ++]
+    alias: { // [!code ++]
+      react: './react-src/packages/react', // [!code ++]
+      'react-dom': './react-src/packages/react-dom', // [!code ++]
+      shared: './react-src/packages/shared', // [!code ++]
+      'react-reconciler': './react-src/packages/react-reconciler', // [!code ++]
+      scheduler: './react-src/packages/scheduler', // [!code ++]
+      'react-devtools-scheduling-profiler': './react-src/packages/react-devtools-scheduling-profiler', // [!code ++]
+      'react-devtools-shared': './react-src/packages/react-devtools-shared', // [!code ++]
+      'react-devtools-timeline': './react-src/packages/react-devtools-timeline', // [!code ++]
+    }, // [!code ++]
+  }, // [!code ++]
+});
+```
+
+:::
+
+##### 全局变量
+
+:::info
+
+在 `rsbuild.config.mjs` 文件中添加全局变量：
+
+```js
+export default defineConfig({
+  source: { // [!code ++]
+    define: { // [!code ++]
+      __DEV__: true, // [!code ++]
+      __PROFILE__: true, // [!code ++]
+      __UMD__: true, // [!code ++]
+      __EXPERIMENTAL__: true, // [!code ++]
+      __VARIANT__: false, // [!code ++]
+    }, // [!code ++]
+  }, // [!code ++]
+});
+```
+
+:::
+
+##### 处理 flow
+
+还需要对 React 源码中的 flow 进行处理，否则会抛错：
+
+:::info
+
+1. 安装`@rsbuild/plugin-babel` 和 `@babel/preset-flow` 依赖
+
+```bash
+yarn add @rsbuild/plugin-babel @babel/preset-flow -D
+```
+
+2. 在 `rsbuild.config.mjs` 文件中添加对 flow 的转换：
+
+```js
+export default defineConfig({
+  pluginReact(),
+  pluginBabel({ // [!code ++]
+    include: /[\\/]react-src[\\/]/, // [!code ++]
+    babelLoaderOptions: { // [!code ++]
+      presets: ['@babel/preset-flow'], // [!code ++]
+    }, // [!code ++]
+  }), // [!code ++]
+});
+```
+
+:::
+
+### 5. 调试
+
+大吉大利！然后就可以直接在 react-src 文件夹中添加调试代码进行调试了，非常的方便。

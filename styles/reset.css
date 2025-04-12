@@ -9,3 +9,14 @@ img.medium-zoom-image:not(.medium-zoom-image--opened) {
   width: 100%;
   margin: 0;
 }
+
+/* shiki 的文本状态底部会多一行，通过 CSS 去除 */
+.shiki .language-text .line:last-child {
+  display: none;
+}
+.shiki .language-txt .line:last-child {
+  display: none;
+}
+.shiki .language-plain .line:last-child {
+  display: none;
+}
