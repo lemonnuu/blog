@@ -38,6 +38,8 @@ npm run preview
 - 支持公告栏目
 - AI 集成
 
+- 暂时废弃，迁移至 Rspress2.0 版本
+
 ## Website
 
 - [Jelly Monster's Magic Book | GitHub Pages](https://lemonnuu.github.io/blog/)
